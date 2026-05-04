@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.avizamaq.es/sitemap.xml
+
+# Bloquear archivos innecesarios
+Disallow: /admin/
+Disallow: /private/
