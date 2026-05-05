@@ -467,6 +467,183 @@ footer{background:#080808;border-top:1px solid rgba(245,184,0,.1);padding:48px 6
 .cookie-decline{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--silver);padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
 .cookie-decline:hover{border-color:var(--silver);}
 @media(max-width:768px){.cookie-banner{flex-direction:column;padding:16px 20px;gap:12px;}.cookie-btns{width:100%;}.cookie-accept,.cookie-decline{flex:1;text-align:center;}}
+
+:root{
+  --gold:#F5B800;--silver:#B8BCC8;--carbon:#0D0D0D;--carbon-2:#161616;
+  --carbon-3:#1E1E1E;--carbon-4:#2A2A2A;--white:#F0F0F0;
+  --green:#38a169;--red:#e53e3e;--blue:#3182ce;--orange:#dd6b20;
+  --sidebar:220px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--carbon-2);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;}
+
+/* LOGIN */
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--carbon);}
+.login-box{background:var(--carbon-2);border:1px solid rgba(245,184,0,.2);padding:48px;width:400px;}
+.login-logo{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;letter-spacing:2px;text-align:center;margin-bottom:8px;}
+.login-logo span{color:var(--gold);}
+.login-sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--silver);text-align:center;margin-bottom:32px;}
+.login-field{margin-bottom:16px;}
+.login-field label{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;font-weight:600;}
+.login-field input{width:100%;background:var(--carbon-3);border:1px solid rgba(255,255,255,.08);color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.login-field input:focus{border-color:var(--gold);}
+.btn-login{width:100%;background:var(--gold);border:none;color:var(--carbon);padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:background .2s;}
+.btn-login:hover{background:#FFD43B;}
+.login-alert{font-size:12px;color:#feb2b2;background:rgba(229,62,62,.1);border-left:3px solid var(--red);padding:10px 12px;margin-bottom:16px;}
+
+/* LAYOUT */
+.admin-layout{display:grid;grid-template-columns:var(--sidebar) 1fr;min-height:100vh;display:none;}
+
+/* SIDEBAR */
+.sidebar{background:var(--carbon);border-right:1px solid rgba(245,184,0,.1);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;width:var(--sidebar);z-index:100;}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(245,184,0,.1);}
+.sidebar-brand{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:2px;}
+.sidebar-brand span{color:var(--gold);}
+.sidebar-admin{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(184,188,200,.4);margin-top:2px;}
+.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto;}
+.nav-section{padding:8px 16px 4px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(184,188,200,.3);font-weight:700;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all .2s;color:rgba(184,188,200,.6);font-size:13px;font-weight:500;border-left:3px solid transparent;}
+.nav-item:hover{color:var(--white);background:rgba(255,255,255,.04);}
+.nav-item.active{color:var(--gold);background:rgba(245,184,0,.06);border-left-color:var(--gold);}
+.nav-item .nav-icon{font-size:16px;width:20px;text-align:center;}
+.nav-badge{margin-left:auto;background:var(--red);color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.05);}
+.sidebar-user{font-size:11px;color:rgba(184,188,200,.5);}
+.btn-logout{background:none;border:1px solid rgba(255,255,255,.1);color:rgba(184,188,200,.5);padding:6px 12px;font-family:'Barlow',sans-serif;font-size:11px;cursor:pointer;margin-top:8px;width:100%;transition:all .2s;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+
+/* MAIN */
+.main-content{margin-left:var(--sidebar);padding:0;}
+.topbar{background:var(--carbon);border-bottom:1px solid rgba(245,184,0,.1);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.topbar-actions{display:flex;gap:10px;align-items:center;}
+
+/* PAGES */
+.page{display:none;padding:32px;}
+.page.active{display:block;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:32px;}
+.stat-card{background:var(--carbon-3);padding:24px;border:1px solid rgba(255,255,255,.04);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.stat-card.gold::before{background:var(--gold);}
+.stat-card.green::before{background:var(--green);}
+.stat-card.blue::before{background:var(--blue);}
+.stat-card.red::before{background:var(--red);}
+.stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(184,188,200,.5);margin-bottom:10px;font-weight:600;}
+.stat-value{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;line-height:1;}
+.stat-value.gold{color:var(--gold);}
+.stat-value.green{color:var(--green);}
+.stat-value.blue{color:var(--blue);}
+.stat-value.red{color:var(--red);}
+.stat-sub{font-size:11px;color:rgba(184,188,200,.4);margin-top:6px;}
+
+/* TABLES */
+.table-card{background:var(--carbon-3);border:1px solid rgba(255,255,255,.05);}
+.table-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.05);}
+.table-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.table-actions{display:flex;gap:8px;}
+.btn-sm{padding:6px 14px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s;}
+.btn-gold{background:var(--gold);color:var(--carbon);}
+.btn-gold:hover{background:#FFD43B;}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--silver);}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-green{background:var(--green);color:white;}
+.btn-red{background:var(--red);color:white;}
+.btn-blue{background:var(--blue);color:white;}
+
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 16px;text-align:left;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(184,188,200,.5);font-weight:700;border-bottom:1px solid rgba(255,255,255,.05);background:rgba(0,0,0,.2);}
+td{padding:12px 16px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+tr:hover td{background:rgba(255,255,255,.02);}
+tr:last-child td{border-bottom:none;}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;}
+.badge-pending{background:rgba(221,107,32,.15);color:#ed8936;border:1px solid rgba(221,107,32,.3);}
+.badge-approved{background:rgba(56,161,105,.15);color:#68d391;border:1px solid rgba(56,161,105,.3);}
+.badge-rejected{background:rgba(229,62,62,.15);color:#fc8181;border:1px solid rgba(229,62,62,.3);}
+.badge-suspended{background:rgba(113,128,150,.15);color:#a0aec0;border:1px solid rgba(113,128,150,.3);}
+.badge-cliente{background:rgba(184,188,200,.1);color:var(--silver);border:1px solid rgba(184,188,200,.2);}
+.badge-profesional{background:rgba(49,130,206,.15);color:#63b3ed;border:1px solid rgba(49,130,206,.3);}
+.badge-distribuidor{background:rgba(245,184,0,.15);color:var(--gold);border:1px solid rgba(245,184,0,.3);}
+.badge-vip{background:rgba(159,122,234,.15);color:#b794f4;border:1px solid rgba(159,122,234,.3);}
+
+/* SEARCH */
+.search-bar{padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:10px;align-items:center;}
+.search-input-admin{flex:1;background:var(--carbon-4);border:1px solid rgba(255,255,255,.08);color:var(--white);padding:9px 14px;font-family:'Barlow',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.search-input-admin:focus{border-color:var(--gold);}
+.search-input-admin::placeholder{color:rgba(184,188,200,.3);}
+.filter-select{background:var(--carbon-4);border:1px solid rgba(255,255,255,.08);color:var(--silver);padding:9px 12px;font-family:'Barlow',sans-serif;font-size:12px;outline:none;cursor:pointer;}
+
+/* MODAL ADMIN */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-admin{background:var(--carbon-2);border:1px solid rgba(245,184,0,.15);width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;}
+.modal-admin-header{background:var(--carbon);padding:22px 28px;border-bottom:1px solid rgba(245,184,0,.1);display:flex;align-items:center;justify-content:space-between;}
+.modal-admin-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.modal-admin-close{background:none;border:none;color:var(--silver);font-size:20px;cursor:pointer;}
+.modal-admin-body{padding:24px 28px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--silver);margin-bottom:6px;font-weight:600;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--carbon-3);border:1px solid rgba(255,255,255,.08);color:var(--white);padding:10px 14px;font-family:'Barlow',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
+.form-group textarea{resize:vertical;min-height:80px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.modal-admin-footer{padding:16px 28px;border-top:1px solid rgba(255,255,255,.05);display:flex;gap:10px;justify-content:flex-end;}
+
+/* PRODUCT FORM */
+.prod-grid-admin{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:24px;}
+.prod-admin-card{background:var(--carbon-3);border:1px solid rgba(255,255,255,.05);padding:16px;transition:border-color .2s;}
+.prod-admin-card:hover{border-color:rgba(245,184,0,.2);}
+.prod-admin-ref{font-size:10px;letter-spacing:1px;color:rgba(184,188,200,.4);margin-bottom:4px;}
+.prod-admin-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;margin-bottom:4px;}
+.prod-admin-brand{font-size:11px;color:var(--gold);margin-bottom:8px;}
+.prod-admin-price{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--gold);}
+.prod-admin-actions{display:flex;gap:6px;margin-top:12px;}
+
+/* ALERTS */
+.alert-admin{padding:10px 14px;font-size:12px;margin-bottom:16px;border-left:3px solid;}
+.alert-success{background:rgba(56,161,105,.1);border-color:var(--green);color:#9ae6b4;}
+.alert-error{background:rgba(229,62,62,.1);border-color:var(--red);color:#feb2b2;}
+.alert-info{background:rgba(245,184,0,.1);border-color:var(--gold);color:#fbd38d;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:rgba(184,188,200,.3);}
+.empty-icon{font-size:48px;margin-bottom:12px;display:block;opacity:.3;}
+
+/* LOADING */
+.loading{text-align:center;padding:40px;color:rgba(184,188,200,.4);font-size:13px;}
+
+/* DETAIL VIEW */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;}
+.detail-section{background:var(--carbon-3);border:1px solid rgba(255,255,255,.05);padding:20px;}
+.detail-section-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;}
+.detail-row:last-child{border-bottom:none;}
+.detail-label{color:rgba(184,188,200,.5);font-size:11px;letter-spacing:.5px;}
+.detail-value{color:var(--white);text-align:right;max-width:60%;word-break:break-all;}
+
+/* TOAST */
+.toast-admin{position:fixed;bottom:24px;right:24px;background:var(--carbon-3);border:1px solid rgba(245,184,0,.3);border-left:4px solid var(--gold);padding:12px 18px;font-size:13px;color:var(--white);z-index:999;transform:translateY(60px);opacity:0;transition:all .3s;max-width:300px;}
+.toast-admin.show{transform:translateY(0);opacity:1;}
+
+/* TOGGLE */
+.toggle{position:relative;width:40px;height:22px;cursor:pointer;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--carbon-4);border-radius:22px;transition:.3s;}
+.toggle-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:var(--silver);border-radius:50%;transition:.3s;}
+.toggle input:checked + .toggle-slider{background:var(--green);}
+.toggle input:checked + .toggle-slider::before{transform:translateX(18px);background:white;}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid rgba(255,255,255,.05);}
+.page-info{font-size:12px;color:rgba(184,188,200,.4);}
+.page-btns{display:flex;gap:4px;}
+.page-btn{background:var(--carbon-4);border:1px solid rgba(255,255,255,.08);color:var(--silver);padding:5px 12px;font-size:12px;cursor:pointer;transition:all .2s;}
+.page-btn:hover,.page-btn.active{background:var(--gold);border-color:var(--gold);color:var(--carbon);}
+.page-btn:disabled{opacity:.3;cursor:default;}
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--carbon);}
@@ -565,6 +742,348 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 </script>
 </head>
 <body>
+
+
+<!-- ══════════════ ADMIN PANEL ══════════════ -->
+<!-- ADMIN LAYOUT -->
+<div class="admin-layout" id="adminLayout" style="display:none">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-brand">AVIZA<span>MAQ</span></div>
+      <div class="sidebar-admin">Panel Admin</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <div class="nav-item active" onclick="showAdminPage('dashboard')"><span class="nav-icon">📊</span>Dashboard</div>
+      <div class="nav-section">Gestión</div>
+      <div class="nav-item" onclick="showAdminPage('clientes')"><span class="nav-icon">👥</span>Clientes <span class="nav-badge" id="badgePendientes">0</span></div>
+      <div class="nav-item" onclick="showAdminPage('productos')"><span class="nav-icon">⚙️</span>Productos</div>
+      <div class="nav-item" onclick="showAdminPage('pedidos')"><span class="nav-icon">📦</span>Pedidos</div>
+      <div class="nav-section">Comunicación</div>
+      <div class="nav-item" onclick="showAdminPage('consultas')"><span class="nav-icon">💬</span>Consultas <span class="nav-badge" id="badgeConsultas">0</span></div>
+      <div class="nav-item" onclick="showAdminPage('newsletter')"><span class="nav-icon">📧</span>Newsletter</div>
+      <div class="nav-section">Web</div>
+      <div class="nav-item" onclick="hideAdminDashboard()"><span class="nav-icon">🌐</span>Ver web</div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser">Panel activo</div>
+      <button class="btn-logout" onclick="doAdminLogout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-actions">
+        <span style="font-size:12px;color:rgba(184,188,200,.4)" id="topbarDate"></span>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card gold"><div class="stat-label">Clientes registrados</div><div class="stat-value gold" id="statClientes">—</div><div class="stat-sub">Total en base de datos</div></div>
+        <div class="stat-card red"><div class="stat-label">Pendientes de aprobación</div><div class="stat-value red" id="statPendientes">—</div><div class="stat-sub">Requieren revisión</div></div>
+        <div class="stat-card blue"><div class="stat-label">Productos activos</div><div class="stat-value blue" id="statProductos">—</div><div class="stat-sub">En catálogo</div></div>
+        <div class="stat-card green"><div class="stat-label">Consultas nuevas</div><div class="stat-value green" id="statConsultas">—</div><div class="stat-sub">Sin responder</div></div>
+      </div>
+
+      <!-- Últimos clientes pendientes -->
+      <div class="table-card" style="margin-bottom:24px">
+        <div class="table-header">
+          <div class="table-title">⚡ Clientes pendientes de aprobación</div>
+          <button class="btn-sm btn-gold" onclick="showAdminPage('clientes')">Ver todos</button>
+        </div>
+        <div id="dashPendientes"><div class="loading">Cargando…</div></div>
+      </div>
+
+      <!-- Últimas consultas -->
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">💬 Consultas recientes</div>
+          <button class="btn-sm btn-gold" onclick="showAdminPage('consultas')">Ver todas</button>
+        </div>
+        <div id="dashConsultas"><div class="loading">Cargando…</div></div>
+      </div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div class="page" id="page-clientes">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">👥 Gestión de clientes</div>
+          <div class="table-actions">
+            <button class="btn-sm btn-outline" onclick="exportClientes()">⬇ Exportar CSV</button>
+          </div>
+        </div>
+        <div class="search-bar">
+          <input class="search-input-admin" type="text" id="searchClientes" placeholder="Buscar por nombre, email, NIF…" oninput="filterClientes()">
+          <select class="filter-select" id="filterEstado" onchange="filterClientes()">
+            <option value="">Todos los estados</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="aprobado">Aprobado</option>
+            <option value="rechazado">Rechazado</option>
+            <option value="suspendido">Suspendido</option>
+          </select>
+          <select class="filter-select" id="filterTarifa" onchange="filterClientes()">
+            <option value="">Todas las tarifas</option>
+            <option value="cliente">Cliente</option>
+            <option value="profesional">Profesional</option>
+            <option value="distribuidor">Distribuidor</option>
+            <option value="vip">VIP</option>
+          </select>
+        </div>
+        <div id="clientesTable"><div class="loading">Cargando clientes…</div></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="page" id="page-productos">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">⚙️ Gestión de productos</div>
+          <div class="table-actions">
+            <button class="btn-sm btn-gold" onclick="openProdModal()">+ Nuevo producto</button>
+          </div>
+        </div>
+        <div class="search-bar">
+          <input class="search-input-admin" type="text" id="searchProductos" placeholder="Buscar por referencia, nombre, marca…" oninput="filterProductos()">
+          <select class="filter-select" id="filterMarca" onchange="filterProductos()">
+            <option value="">Todas las marcas</option>
+            <option>AUSA</option><option>PIQUERSA</option><option>MZ IMER</option>
+            <option>LOMBARDINI</option><option>ISUZU</option>
+          </select>
+          <select class="filter-select" id="filterActivo" onchange="filterProductos()">
+            <option value="">Todos</option>
+            <option value="true">Activos</option>
+            <option value="false">Inactivos</option>
+          </select>
+        </div>
+        <div id="productosTable"><div class="loading">Cargando productos…</div></div>
+      </div>
+    </div>
+
+    <!-- PEDIDOS -->
+    <div class="page" id="page-pedidos">
+      <div class="table-card">
+        <div class="table-header"><div class="table-title">📦 Gestión de pedidos</div></div>
+        <div id="pedidosTable"><div class="empty-state"><span class="empty-icon">📦</span>No hay pedidos todavía</div></div>
+      </div>
+    </div>
+
+    <!-- CONSULTAS -->
+    <div class="page" id="page-consultas">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">💬 Consultas de contacto</div>
+        </div>
+        <div class="search-bar">
+          <input class="search-input-admin" type="text" id="searchConsultas" placeholder="Buscar por nombre, email, asunto…" oninput="filterConsultas()">
+          <select class="filter-select" id="filterConsultaEstado" onchange="filterConsultas()">
+            <option value="">Todos los estados</option>
+            <option value="nueva">Nueva</option>
+            <option value="en_proceso">En proceso</option>
+            <option value="resuelta">Resuelta</option>
+          </select>
+        </div>
+        <div id="consultasTable"><div class="loading">Cargando consultas…</div></div>
+      </div>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <div class="page" id="page-newsletter">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-title">📧 Newsletter</div>
+          <button class="btn-sm btn-outline" onclick="exportNewsletter()">⬇ Exportar emails</button>
+        </div>
+        <div id="newsletterTable"><div class="loading">Cargando…</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL: Cliente detalle/edición -->
+<div class="modal-overlay" id="modalCliente">
+  <div class="modal-admin" style="width:680px">
+    <div class="modal-admin-header">
+      <div class="modal-admin-title" id="modalClienteTitle">Detalle del cliente</div>
+      <button class="modal-admin-close" onclick="closeModal('modalCliente')">✕</button>
+    </div>
+    <div class="modal-admin-body" id="modalClienteBody"></div>
+    <div class="modal-admin-footer" id="modalClienteFooter"></div>
+  </div>
+</div>
+
+<!-- MODAL: Producto -->
+<div class="modal-overlay" id="modalProducto">
+  <div class="modal-admin">
+    <div class="modal-admin-header">
+      <div class="modal-admin-title" id="modalProdTitle">Nuevo producto</div>
+      <button class="modal-admin-close" onclick="closeModal('modalProducto')">✕</button>
+    </div>
+    <div class="modal-admin-body">
+      <div id="prodAlert"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Referencia</label><input type="text" id="prodRef" placeholder="Ej: 45.00354.00"></div>
+        <div class="form-group"><label>Nombre *</label><input type="text" id="prodNombre" placeholder="Nombre del recambio"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Marca *</label>
+          <select id="prodMarca">
+            <option>AUSA</option><option>PIQUERSA</option><option>MZ IMER</option>
+            <option>AGRIA</option><option>HUMSA</option><option>MULTITOR</option>
+            <option>LOMBARDINI</option><option>ISUZU</option><option>DEUTZ</option>
+            <option>HATZ</option><option>PERKINS</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Categoría *</label>
+          <select id="prodCategoria">
+            <option>Motor y transmisión</option>
+            <option>Filtros y mantenimiento</option>
+            <option>Hidráulica y neumática</option>
+            <option>Rodajes y rodillos</option>
+            <option>Carrocería y chasis</option>
+            <option>Eléctrico y electrónico</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Compatible con (modelos)</label><input type="text" id="prodCompat" placeholder="Ej: AUSA C11, CT20"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Precio (€ sin IVA)</label><input type="number" id="prodPrecio" placeholder="0.00" step="0.01"></div>
+        <div class="form-group"><label>IVA (%)</label><input type="number" id="prodIva" placeholder="21" value="21"></div>
+      </div>
+      <div class="form-group"><label>Descripción</label><textarea id="prodDesc" placeholder="Descripción técnica del recambio…"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Icono emoji</label><input type="text" id="prodIcono" placeholder="⚙️" value="⚙️"></div>
+        <div class="form-group"><label>Stock</label><input type="number" id="prodStock" placeholder="0" value="0"></div>
+      </div>
+      <div style="display:flex;gap:24px;margin-top:8px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="prodConsultar"> Precio a consultar
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="prodUsado"> Recambio usado
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="prodActivo" checked> Activo en web
+        </label>
+      </div>
+    </div>
+    <div class="modal-admin-footer">
+      <button class="btn-sm btn-outline" onclick="closeModal('modalProducto')">Cancelar</button>
+      <button class="btn-sm btn-gold" onclick="saveProd()">Guardar producto</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Consulta -->
+<div class="modal-overlay" id="modalConsulta">
+  <div class="modal-admin">
+    <div class="modal-admin-header">
+      <div class="modal-admin-title">Consulta de contacto</div>
+      <button class="modal-admin-close" onclick="closeModal('modalConsulta')">✕</button>
+    </div>
+    <div class="modal-admin-body" id="modalConsultaBody"></div>
+    <div class="modal-admin-footer" id="modalConsultaFooter"></div>
+  </div>
+</div>
+
+
+<!-- MODAL: Cliente detalle/edición -->
+<div class="modal-overlay" id="modalCliente">
+  <div class="modal-admin" style="width:680px">
+    <div class="modal-admin-header">
+      <div class="modal-admin-title" id="modalClienteTitle">Detalle del cliente</div>
+      <button class="modal-admin-close" onclick="closeModal('modalCliente')">✕</button>
+    </div>
+    <div class="modal-admin-body" id="modalClienteBody"></div>
+    <div class="modal-admin-footer" id="modalClienteFooter"></div>
+  </div>
+</div>
+
+<!-- MODAL: Producto -->
+<div class="modal-overlay" id="modalProducto">
+  <div class="modal-admin">
+    <div class="modal-admin-header">
+      <div class="modal-admin-title" id="modalProdTitle">Nuevo producto</div>
+      <button class="modal-admin-close" onclick="closeModal('modalProducto')">✕</button>
+    </div>
+    <div class="modal-admin-body">
+      <div id="prodAlert"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Referencia</label><input type="text" id="prodRef" placeholder="Ej: 45.00354.00"></div>
+        <div class="form-group"><label>Nombre *</label><input type="text" id="prodNombre" placeholder="Nombre del recambio"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Marca *</label>
+          <select id="prodMarca">
+            <option>AUSA</option><option>PIQUERSA</option><option>MZ IMER</option>
+            <option>AGRIA</option><option>HUMSA</option><option>MULTITOR</option>
+            <option>LOMBARDINI</option><option>ISUZU</option><option>DEUTZ</option>
+            <option>HATZ</option><option>PERKINS</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Categoría *</label>
+          <select id="prodCategoria">
+            <option>Motor y transmisión</option>
+            <option>Filtros y mantenimiento</option>
+            <option>Hidráulica y neumática</option>
+            <option>Rodajes y rodillos</option>
+            <option>Carrocería y chasis</option>
+            <option>Eléctrico y electrónico</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Compatible con (modelos)</label><input type="text" id="prodCompat" placeholder="Ej: AUSA C11, CT20"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Precio (€ sin IVA)</label><input type="number" id="prodPrecio" placeholder="0.00" step="0.01"></div>
+        <div class="form-group"><label>IVA (%)</label><input type="number" id="prodIva" placeholder="21" value="21"></div>
+      </div>
+      <div class="form-group"><label>Descripción</label><textarea id="prodDesc" placeholder="Descripción técnica del recambio…"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Icono emoji</label><input type="text" id="prodIcono" placeholder="⚙️" value="⚙️"></div>
+        <div class="form-group"><label>Stock</label><input type="number" id="prodStock" placeholder="0" value="0"></div>
+      </div>
+      <div style="display:flex;gap:24px;margin-top:8px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="prodConsultar"> Precio a consultar
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="prodUsado"> Recambio usado
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="prodActivo" checked> Activo en web
+        </label>
+      </div>
+    </div>
+    <div class="modal-admin-footer">
+      <button class="btn-sm btn-outline" onclick="closeModal('modalProducto')">Cancelar</button>
+      <button class="btn-sm btn-gold" onclick="saveProd()">Guardar producto</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Consulta -->
+<div class="modal-overlay" id="modalConsulta">
+  <div class="modal-admin">
+    <div class="modal-admin-header">
+      <div class="modal-admin-title">Consulta de contacto</div>
+      <button class="modal-admin-close" onclick="closeModal('modalConsulta')">✕</button>
+    </div>
+    <div class="modal-admin-body" id="modalConsultaBody"></div>
+    <div class="modal-admin-footer" id="modalConsultaFooter"></div>
+  </div>
+</div>
+
+
+<div class="toast-admin" id="toastAdmin"></div>
 
 <!-- ── NEWSLETTER POPUP ── -->
 <div class="popup-overlay" id="popupOverlay">
@@ -1299,8 +1818,8 @@ let currentUser=null,cart=[],activeFilters={brands:[],cats:[]},searchQuery='',us
 // ── ROUTING ──
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  window.scrollTo(0,0);
+  const el = document.getElementById('page-'+id);
+  if(el) { el.classList.add('active'); window.scrollTo(0,0); }
   if(id==='catalog') renderCatalog();
   if(id==='usados') renderUsed();
 }
@@ -1500,6 +2019,11 @@ function doLogin(){
   if(!u){al.innerHTML='<div class="alert alert-error">Email o contraseña incorrectos</div>';return;}
   if(!u.approved){al.innerHTML='<div class="alert alert-info">Tu cuenta está pendiente de aprobación.</div>';return;}
   currentUser=u;closeModal('login');updateNavUser();renderFeatured();
+  // If admin, show admin dashboard
+  if(u.email === 'avizamaq@gmail.com') {
+    showAdminDashboard();
+    return;
+  }
   showToast('¡Bienvenido '+u.name+'! Tarifa: '+u.tier.toUpperCase());
 }
 // ── SUPABASE: Cargar productos ──
@@ -1678,11 +2202,11 @@ async function doRegister(){
 }
 function updateNavUser(){
   if(!currentUser)return;
-  const isAdmin = currentUser.email === 'avizamaq@gmail.com' || currentUser.tier === 'admin';
+  const isAdmin = currentUser.email === 'avizamaq@gmail.com';
   document.getElementById('navRight').innerHTML=`
     <span class="user-greeting">Hola, ${currentUser.name.split(' ')[0]}</span>
     <span class="user-tier-badge">${currentUser.tier.toUpperCase()}</span>
-    ${isAdmin ? `<button class="btn-nav-login" style="border-color:var(--gold);color:var(--gold)" onclick="window.location.href='/columna.html'">⚙ Admin</button>` : ''}
+    ${isAdmin ? `<button class="btn-nav-login" style="border-color:var(--gold);color:var(--gold)" onclick="showAdminDashboard()">⚙ Admin</button>` : ''}
     <button class="nav-cart" onclick="toggleCart()">🛒 <span class="cart-count" id="cartCount">${cart.reduce((s,c)=>s+c.qty,0)}</span></button>
     <button class="btn-nav-login" onclick="doLogout()">Cerrar sesión</button>`;
 }
@@ -1787,6 +2311,508 @@ function enableAnalytics(){
   // Google Analytics ya está cargado en el head
   if(typeof gtag !== 'undefined') gtag('consent','update',{'analytics_storage':'granted'});
 }
+
+
+// ══════════════ ADMIN PANEL JS ══════════════
+
+// ── SHOW ADMIN DASHBOARD ──
+function showAdminDashboard(){
+  // Hide all public pages
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  // Show admin layout
+  const adminLayout = document.getElementById('adminLayout');
+  if(adminLayout) {
+    adminLayout.style.display = 'grid';
+    // Update sidebar user
+    const sidebarUser = document.getElementById('sidebarUser');
+    if(sidebarUser) sidebarUser.textContent = 'Panel activo';
+    loadDashboard();
+    showToast('⚙ Panel de administración');
+  }
+}
+
+function hideAdminDashboard(){
+  const adminLayout = document.getElementById('adminLayout');
+  if(adminLayout) adminLayout.style.display = 'none';
+  showPage('home');
+}
+
+
+// ── DATE ──
+if(document.getElementById('topbarDate')) document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// ── AUTH ──
+async function doAdminLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const al=document.getElementById('loginAlert');
+  al.innerHTML='';
+  if(!email||!pass){al.innerHTML='<div class="login-alert">Rellena todos los campos</div>';return;}
+  // Admin verification handled by Supabase RLS
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){al.innerHTML=`<div class="login-alert">${error.message}</div>`;return;}
+  enterAdmin();
+}
+
+// enterAdmin replaced by showAdminDashboard
+
+async function doAdminLogout(){
+  await sb.auth.signOut();
+  currentUser = null;
+  hideAdminDashboard();
+  document.getElementById('adminLayout').style.display='none';
+  document.getElementById('navRight').innerHTML=`
+    <button class="nav-cart" onclick="toggleCart()">🛒 <span class="cart-count" id="cartCount">0</span></button>
+    <button class="btn-nav-login" onclick="openModal('login')">Iniciar sesión</button>
+    <button class="btn-nav-reg" onclick="openModal('register')">Registrarse</button>`;
+  showToast('Sesión cerrada');
+}
+
+// Check session on load
+// Admin session handled by main site auth
+
+// ── NAVIGATION ──
+function showAdminPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event?.currentTarget?.classList?.add('active');
+  const titles={dashboard:'Dashboard',clientes:'Gestión de Clientes',productos:'Catálogo de Productos',pedidos:'Pedidos',consultas:'Consultas',newsletter:'Newsletter'};
+  document.getElementById('topbarTitle').textContent=titles[id]||id;
+  if(id==='clientes') loadClientes();
+  if(id==='productos') loadProductos();
+  if(id==='consultas') loadConsultas();
+  if(id==='newsletter') loadNewsletter();
+  if(id==='pedidos') loadPedidos();
+}
+
+// ── DASHBOARD ──
+async function loadDashboard(){
+  const [c,p,cons]=await Promise.all([
+    sb.from('clientes').select('*'),
+    sb.from('productos').select('*'),
+    sb.from('consultas').select('*')
+  ]);
+  allClientes=c.data||[];
+  allProductos=p.data||[];
+  allConsultas=cons.data||[];
+  const pendientes=allClientes.filter(c=>c.estado==='pendiente');
+  const nuevasConsultas=allConsultas.filter(c=>c.estado==='nueva');
+  document.getElementById('statClientes').textContent=allClientes.length;
+  document.getElementById('statPendientes').textContent=pendientes.length;
+  document.getElementById('statProductos').textContent=allProductos.filter(p=>p.activo).length;
+  document.getElementById('statConsultas').textContent=nuevasConsultas.length;
+  document.getElementById('badgePendientes').textContent=pendientes.length;
+  document.getElementById('badgeConsultas').textContent=nuevasConsultas.length;
+  if(pendientes.length===0) document.getElementById('badgePendientes').style.display='none';
+  if(nuevasConsultas.length===0) document.getElementById('badgeConsultas').style.display='none';
+  renderDashPendientes(pendientes.slice(0,5));
+  renderDashConsultas(nuevasConsultas.slice(0,5));
+}
+
+function renderDashPendientes(data){
+  const el=document.getElementById('dashPendientes');
+  if(!data.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">✅</span>No hay clientes pendientes</div>';return;}
+  el.innerHTML=`<table><thead><tr><th>Nombre</th><th>Email</th><th>Tipo</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>
+    ${data.map(c=>`<tr>
+      <td><strong>${c.nombre} ${c.apellidos}</strong></td>
+      <td>${c.email}</td>
+      <td><span class="badge badge-pending">${c.tipo_registro}</span></td>
+      <td>${new Date(c.created_at).toLocaleDateString('es-ES')}</td>
+      <td><button class="btn-sm btn-green" onclick="quickApprove('${c.id}')">✓ Aprobar</button></td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+function renderDashConsultas(data){
+  const el=document.getElementById('dashConsultas');
+  if(!data.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">✅</span>No hay consultas nuevas</div>';return;}
+  el.innerHTML=`<table><thead><tr><th>Nombre</th><th>Asunto</th><th>Email</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>
+    ${data.map(c=>`<tr>
+      <td>${c.nombre}</td>
+      <td>${c.asunto||'—'}</td>
+      <td>${c.email}</td>
+      <td>${new Date(c.created_at).toLocaleDateString('es-ES')}</td>
+      <td><button class="btn-sm btn-blue" onclick="openConsulta('${c.id}')">Ver</button></td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+// ── CLIENTES ──
+async function loadClientes(){
+  const {data}=await sb.from('clientes').select('*').order('created_at',{ascending:false});
+  allClientes=data||[];
+  renderClientesTable(allClientes);
+}
+
+function filterClientes(){
+  const q=document.getElementById('searchClientes').value.toLowerCase();
+  const est=document.getElementById('filterEstado').value;
+  const tar=document.getElementById('filterTarifa').value;
+  let filtered=allClientes.filter(c=>{
+    const match=!q||(c.nombre+' '+c.apellidos+' '+c.email+' '+c.nif).toLowerCase().includes(q);
+    const matchEst=!est||c.estado===est;
+    const matchTar=!tar||c.tarifa===tar;
+    return match&&matchEst&&matchTar;
+  });
+  renderClientesTable(filtered);
+}
+
+function renderClientesTable(data){
+  const el=document.getElementById('clientesTable');
+  if(!data.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">👥</span>No se encontraron clientes</div>';return;}
+  el.innerHTML=`<table><thead><tr>
+    <th>Nombre</th><th>Email</th><th>NIF</th><th>Tipo</th>
+    <th>Estado</th><th>Tarifa</th><th>Dto.</th><th>Fecha alta</th><th>Acciones</th>
+  </tr></thead><tbody>
+    ${data.map(c=>`<tr>
+      <td><strong>${c.nombre} ${c.apellidos}</strong>${c.razon_social?`<br><small style="color:var(--silver);opacity:.6">${c.razon_social}</small>`:''}</td>
+      <td>${c.email}</td>
+      <td><small>${c.nif}</small></td>
+      <td><span class="badge badge-pending">${c.tipo_registro}</span></td>
+      <td><span class="badge badge-${c.estado}">${c.estado}</span></td>
+      <td><span class="badge badge-${c.tarifa}">${c.tarifa}</span></td>
+      <td>${c.descuento_personalizado>0?`<span style="color:var(--green);font-weight:700">${c.descuento_personalizado}%</span>`:'—'}</td>
+      <td>${new Date(c.created_at).toLocaleDateString('es-ES')}</td>
+      <td style="white-space:nowrap">
+        <button class="btn-sm btn-outline" onclick="openClienteModal('${c.id}')">Ver</button>
+        ${c.estado==='pendiente'?`<button class="btn-sm btn-green" onclick="quickApprove('${c.id}')">✓</button>`:''}
+      </td>
+    </tr>`).join('')}
+  </tbody></table>
+  <div class="pagination"><span class="page-info">${data.length} clientes</span></div>`;
+}
+
+async function quickApprove(id){
+  const {error}=await sb.from('clientes').update({estado:'aprobado'}).eq('id',id);
+  if(!error){showToast('✓ Cliente aprobado');loadDashboard();loadClientes();}
+}
+
+function openClienteModal(id){
+  const c=allClientes.find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('modalClienteTitle').textContent=`${c.nombre} ${c.apellidos}`;
+  document.getElementById('modalClienteBody').innerHTML=`
+    <div id="clienteModalAlert"></div>
+    <div class="detail-grid">
+      <div class="detail-section">
+        <div class="detail-section-title">Datos personales</div>
+        <div class="detail-row"><span class="detail-label">Tipo</span><span class="detail-value">${c.tipo_registro}</span></div>
+        <div class="detail-row"><span class="detail-label">Nombre</span><span class="detail-value">${c.nombre} ${c.apellidos}</span></div>
+        <div class="detail-row"><span class="detail-label">NIF</span><span class="detail-value">${c.nif}</span></div>
+        <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">${c.email}</span></div>
+        <div class="detail-row"><span class="detail-label">Teléfono</span><span class="detail-value">${c.telefono_prefijo} ${c.telefono}</span></div>
+        <div class="detail-row"><span class="detail-label">Actividad</span><span class="detail-value">${c.actividad||'—'}</span></div>
+        ${c.razon_social?`<div class="detail-row"><span class="detail-label">Razón social</span><span class="detail-value">${c.razon_social}</span></div>`:''}
+        ${c.cif_empresa?`<div class="detail-row"><span class="detail-label">CIF empresa</span><span class="detail-value">${c.cif_empresa}</span></div>`:''}
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Dirección facturación</div>
+        <div class="detail-row"><span class="detail-label">Dirección</span><span class="detail-value">${c.fact_direccion||'—'}</span></div>
+        <div class="detail-row"><span class="detail-label">CP / Localidad</span><span class="detail-value">${c.fact_cp||''} ${c.fact_localidad||''}</span></div>
+        <div class="detail-row"><span class="detail-label">Provincia</span><span class="detail-value">${c.fact_provincia||'—'}</span></div>
+        <div class="detail-row"><span class="detail-label">País</span><span class="detail-value">${c.fact_pais||'ES'}</span></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;background:var(--carbon-3);padding:20px;border:1px solid rgba(255,255,255,.05)">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">Configuración de cuenta</div>
+      <div class="form-row">
+        <div class="form-group"><label>Estado</label>
+          <select id="editEstado">
+            <option value="pendiente" ${c.estado==='pendiente'?'selected':''}>Pendiente</option>
+            <option value="aprobado" ${c.estado==='aprobado'?'selected':''}>Aprobado</option>
+            <option value="rechazado" ${c.estado==='rechazado'?'selected':''}>Rechazado</option>
+            <option value="suspendido" ${c.estado==='suspendido'?'selected':''}>Suspendido</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Tarifa</label>
+          <select id="editTarifa">
+            <option value="cliente" ${c.tarifa==='cliente'?'selected':''}>Cliente</option>
+            <option value="profesional" ${c.tarifa==='profesional'?'selected':''}>Profesional</option>
+            <option value="distribuidor" ${c.tarifa==='distribuidor'?'selected':''}>Distribuidor</option>
+            <option value="vip" ${c.tarifa==='vip'?'selected':''}>VIP</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Descuento personalizado (%)</label>
+        <input type="number" id="editDescuento" value="${c.descuento_personalizado||0}" min="0" max="100" step="0.5" placeholder="0">
+      </div>
+      <div class="form-group"><label>Notas internas (no visibles por el cliente)</label>
+        <textarea id="editNotas" placeholder="Notas sobre este cliente…">${c.notas_admin||''}</textarea>
+      </div>
+    </div>`;
+  document.getElementById('modalClienteFooter').innerHTML=`
+    <button class="btn-sm btn-outline" onclick="closeModal('modalCliente')">Cancelar</button>
+    <button class="btn-sm btn-gold" onclick="saveCliente('${c.id}')">Guardar cambios</button>`;
+  document.getElementById('modalCliente').classList.add('open');
+}
+
+async function saveCliente(id){
+  const estado=document.getElementById('editEstado').value;
+  const tarifa=document.getElementById('editTarifa').value;
+  const descuento=parseFloat(document.getElementById('editDescuento').value)||0;
+  const notas=document.getElementById('editNotas').value;
+  const {error}=await sb.from('clientes').update({estado,tarifa,descuento_personalizado:descuento,notas_admin:notas}).eq('id',id);
+  if(error){document.getElementById('clienteModalAlert').innerHTML=`<div class="alert-admin alert-error">${error.message}</div>`;}
+  else{showToast('✓ Cliente actualizado');closeModal('modalCliente');loadClientes();loadDashboard();}
+}
+
+// ── PRODUCTOS ──
+async function loadProductos(){
+  const {data}=await sb.from('productos').select('*').order('nombre');
+  allProductos=data||[];
+  renderProductosTable(allProductos);
+}
+
+function filterProductos(){
+  const q=document.getElementById('searchProductos').value.toLowerCase();
+  const marca=document.getElementById('filterMarca').value;
+  const activo=document.getElementById('filterActivo').value;
+  let filtered=allProductos.filter(p=>{
+    const match=!q||(p.nombre+' '+(p.referencia||'')+' '+p.marca).toLowerCase().includes(q);
+    const matchMarca=!marca||p.marca===marca;
+    const matchActivo=activo===''||p.activo===(activo==='true');
+    return match&&matchMarca&&matchActivo;
+  });
+  renderProductosTable(filtered);
+}
+
+function renderProductosTable(data){
+  const el=document.getElementById('productosTable');
+  if(!data.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">⚙️</span>No se encontraron productos</div>';return;}
+  el.innerHTML=`<table><thead><tr>
+    <th>Ref.</th><th>Nombre</th><th>Marca</th><th>Categoría</th>
+    <th>Precio</th><th>Stock</th><th>Activo</th><th>Acciones</th>
+  </tr></thead><tbody>
+    ${data.map(p=>`<tr>
+      <td><small style="color:var(--silver);opacity:.6">${p.referencia||'—'}</small></td>
+      <td><strong>${p.nombre}</strong>${p.compatible_con?`<br><small style="color:var(--silver);opacity:.5">${p.compatible_con}</small>`:''}</td>
+      <td><span style="color:var(--gold);font-size:12px;font-weight:600">${p.marca}</span></td>
+      <td><small>${p.categoria}</small></td>
+      <td>${p.precio_a_consultar?'<span style="color:var(--silver)">Consultar</span>':`<strong style="color:var(--gold)">${parseFloat(p.precio).toFixed(2)} €</strong> <small style="color:var(--silver);font-size:10px">(+ IVA ${p.iva||21}%)</small>`}</td>
+      <td>${p.stock||0}</td>
+      <td><span style="color:${p.activo?'var(--green)':'var(--red)'}">●</span></td>
+      <td style="white-space:nowrap">
+        <button class="btn-sm btn-outline" onclick="editProd('${p.id}')">✏</button>
+        <button class="btn-sm btn-red" onclick="deleteProd('${p.id}','${p.nombre}')">🗑</button>
+      </td>
+    </tr>`).join('')}
+  </tbody></table>
+  <div class="pagination"><span class="page-info">${data.length} productos</span></div>`;
+}
+
+function openProdModal(){ editingProdId=null; document.getElementById('modalProdTitle').textContent='Nuevo producto'; clearProdForm(); document.getElementById('modalProducto').classList.add('open'); }
+
+function editProd(id){
+  const p=allProductos.find(x=>x.id===id);
+  if(!p)return;
+  editingProdId=id;
+  document.getElementById('modalProdTitle').textContent='Editar producto';
+  document.getElementById('prodRef').value=p.referencia||'';
+  document.getElementById('prodNombre').value=p.nombre;
+  document.getElementById('prodMarca').value=p.marca;
+  document.getElementById('prodCategoria').value=p.categoria;
+  document.getElementById('prodCompat').value=p.compatible_con||'';
+  document.getElementById('prodPrecio').value=p.precio||0;
+  document.getElementById('prodIva').value=p.iva||21;
+  document.getElementById('prodDesc').value=p.descripcion||'';
+  document.getElementById('prodIcono').value=p.icono||'⚙️';
+  document.getElementById('prodStock').value=p.stock||0;
+  document.getElementById('prodConsultar').checked=p.precio_a_consultar;
+  document.getElementById('prodUsado').checked=p.es_usado;
+  document.getElementById('prodActivo').checked=p.activo;
+  document.getElementById('modalProducto').classList.add('open');
+}
+
+function clearProdForm(){
+  ['prodRef','prodNombre','prodCompat','prodDesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('prodPrecio').value='';
+  document.getElementById('prodIva').value='21';
+  document.getElementById('prodIcono').value='⚙️';
+  document.getElementById('prodStock').value='0';
+  document.getElementById('prodConsultar').checked=false;
+  document.getElementById('prodUsado').checked=false;
+  document.getElementById('prodActivo').checked=true;
+  document.getElementById('prodAlert').innerHTML='';
+}
+
+async function saveProd(){
+  const nombre=document.getElementById('prodNombre').value.trim();
+  const marca=document.getElementById('prodMarca').value;
+  if(!nombre){document.getElementById('prodAlert').innerHTML='<div class="alert-admin alert-error">El nombre es obligatorio</div>';return;}
+  const prodData={
+    referencia:document.getElementById('prodRef').value.trim()||null,
+    nombre, marca,
+    categoria:document.getElementById('prodCategoria').value,
+    compatible_con:document.getElementById('prodCompat').value.trim()||null,
+    precio:parseFloat(document.getElementById('prodPrecio').value)||0,
+    iva:parseFloat(document.getElementById('prodIva').value)||21,
+    descripcion:document.getElementById('prodDesc').value.trim()||null,
+    icono:document.getElementById('prodIcono').value||'⚙️',
+    stock:parseInt(document.getElementById('prodStock').value)||0,
+    precio_a_consultar:document.getElementById('prodConsultar').checked,
+    es_usado:document.getElementById('prodUsado').checked,
+    activo:document.getElementById('prodActivo').checked
+  };
+  let error;
+  if(editingProdId){ ({error}=await sb.from('productos').update(prodData).eq('id',editingProdId)); }
+  else { ({error}=await sb.from('productos').insert([prodData])); }
+  if(error){document.getElementById('prodAlert').innerHTML=`<div class="alert-admin alert-error">${error.message}</div>`;}
+  else{showToast(editingProdId?'✓ Producto actualizado':'✓ Producto creado');closeModal('modalProducto');loadProductos();}
+}
+
+async function deleteProd(id,nombre){
+  if(!confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`))return;
+  const {error}=await sb.from('productos').delete().eq('id',id);
+  if(!error){showToast('✓ Producto eliminado');loadProductos();}
+}
+
+// ── PEDIDOS ──
+async function loadPedidos(){
+  const {data}=await sb.from('pedidos').select('*,clientes(nombre,apellidos,email)').order('created_at',{ascending:false});
+  const el=document.getElementById('pedidosTable');
+  if(!data||!data.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">📦</span>No hay pedidos todavía</div>';return;}
+  el.innerHTML=`<table><thead><tr><th>Nº Pedido</th><th>Cliente</th><th>Estado</th><th>Total</th><th>Fecha</th><th>Acciones</th></tr></thead><tbody>
+    ${data.map(p=>`<tr>
+      <td><strong>${p.numero_pedido}</strong></td>
+      <td>${p.clientes?.nombre||'—'} ${p.clientes?.apellidos||''}</td>
+      <td><span class="badge badge-${p.estado}">${p.estado}</span></td>
+      <td style="color:var(--gold);font-weight:700">${parseFloat(p.total).toFixed(2)} €</td>
+      <td>${new Date(p.created_at).toLocaleDateString('es-ES')}</td>
+      <td><button class="btn-sm btn-outline">Ver</button></td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+// ── CONSULTAS ──
+async function loadConsultas(){
+  const {data}=await sb.from('consultas').select('*').order('created_at',{ascending:false});
+  allConsultas=data||[];
+  renderConsultasTable(allConsultas);
+}
+
+function filterConsultas(){
+  const q=document.getElementById('searchConsultas').value.toLowerCase();
+  const est=document.getElementById('filterConsultaEstado').value;
+  let filtered=allConsultas.filter(c=>{
+    const match=!q||(c.nombre+' '+c.email+' '+(c.asunto||'')).toLowerCase().includes(q);
+    return match&&(!est||c.estado===est);
+  });
+  renderConsultasTable(filtered);
+}
+
+function renderConsultasTable(data){
+  const el=document.getElementById('consultasTable');
+  if(!data.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">💬</span>No hay consultas</div>';return;}
+  const estados={nueva:'badge-pending',en_proceso:'badge-profesional',resuelta:'badge-approved'};
+  el.innerHTML=`<table><thead><tr><th>Nombre</th><th>Email</th><th>Asunto</th><th>Referencia</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>
+    ${data.map(c=>`<tr>
+      <td><strong>${c.nombre}</strong></td>
+      <td>${c.email}</td>
+      <td>${c.asunto||'—'}</td>
+      <td><small style="color:var(--gold)">${c.referencia_recambio||'—'}</small></td>
+      <td><span class="badge ${estados[c.estado]||''}">${c.estado}</span></td>
+      <td>${new Date(c.created_at).toLocaleDateString('es-ES')}</td>
+      <td><button class="btn-sm btn-blue" onclick="openConsulta('${c.id}')">Ver</button></td>
+    </tr>`).join('')}
+  </tbody></table>
+  <div class="pagination"><span class="page-info">${data.length} consultas</span></div>`;
+}
+
+function openConsulta(id){
+  const c=allConsultas.find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('modalConsultaBody').innerHTML=`
+    <div class="detail-section" style="margin-bottom:16px">
+      <div class="detail-section-title">Datos del contacto</div>
+      <div class="detail-row"><span class="detail-label">Nombre</span><span class="detail-value">${c.nombre}</span></div>
+      <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value"><a href="mailto:${c.email}" style="color:var(--gold)">${c.email}</a></span></div>
+      <div class="detail-row"><span class="detail-label">Teléfono</span><span class="detail-value">${c.telefono||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Asunto</span><span class="detail-value">${c.asunto||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">Referencia</span><span class="detail-value" style="color:var(--gold)">${c.referencia_recambio||'—'}</span></div>
+    </div>
+    <div class="detail-section" style="margin-bottom:16px">
+      <div class="detail-section-title">Mensaje</div>
+      <p style="font-size:13px;color:rgba(240,240,240,.7);line-height:1.7">${c.mensaje}</p>
+    </div>
+    <div class="form-group">
+      <label>Cambiar estado</label>
+      <select id="consultaEstado">
+        <option value="nueva" ${c.estado==='nueva'?'selected':''}>Nueva</option>
+        <option value="en_proceso" ${c.estado==='en_proceso'?'selected':''}>En proceso</option>
+        <option value="resuelta" ${c.estado==='resuelta'?'selected':''}>Resuelta</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Notas internas</label>
+      <textarea id="consultaNotas" placeholder="Notas sobre esta consulta…">${c.notas_admin||''}</textarea>
+    </div>`;
+  document.getElementById('modalConsultaFooter').innerHTML=`
+    <a class="btn-sm btn-gold" href="mailto:${c.email}?subject=Re: ${c.asunto||'Consulta AVIZAMAQ'}" style="text-decoration:none;display:inline-block">✉ Responder por email</a>
+    <button class="btn-sm btn-outline" onclick="saveConsulta('${c.id}')">Guardar</button>
+    <button class="btn-sm btn-outline" onclick="closeModal('modalConsulta')">Cerrar</button>`;
+  document.getElementById('modalConsulta').classList.add('open');
+}
+
+async function saveConsulta(id){
+  const estado=document.getElementById('consultaEstado').value;
+  const notas=document.getElementById('consultaNotas').value;
+  const {error}=await sb.from('consultas').update({estado,notas_admin:notas}).eq('id',id);
+  if(!error){showToast('✓ Consulta actualizada');closeModal('modalConsulta');loadConsultas();loadDashboard();}
+}
+
+// ── NEWSLETTER ──
+async function loadNewsletter(){
+  const {data}=await sb.from('newsletter').select('*').order('created_at',{ascending:false});
+  const el=document.getElementById('newsletterTable');
+  if(!data||!data.length){el.innerHTML='<div class="empty-state"><span class="empty-icon">📧</span>No hay suscriptores todavía</div>';return;}
+  el.innerHTML=`<div style="padding:16px 24px;font-size:13px;color:var(--silver)">${data.length} suscriptores activos</div>
+  <table><thead><tr><th>Email</th><th>Activo</th><th>Código enviado</th><th>Fecha</th></tr></thead><tbody>
+    ${data.map(n=>`<tr>
+      <td>${n.email}</td>
+      <td><span style="color:${n.activo?'var(--green)':'var(--red)'}">●</span></td>
+      <td>${n.codigo_descuento_enviado?'✓':'-'}</td>
+      <td>${new Date(n.created_at).toLocaleDateString('es-ES')}</td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+// ── EXPORTS ──
+function exportClientes(){
+  const rows=[['Nombre','Apellidos','Email','NIF','Tipo','Estado','Tarifa','Descuento','Actividad','Fecha']];
+  allClientes.forEach(c=>rows.push([c.nombre,c.apellidos,c.email,c.nif,c.tipo_registro,c.estado,c.tarifa,c.descuento_personalizado,c.actividad||'',new Date(c.created_at).toLocaleDateString('es-ES')]));
+  downloadCSV(rows,'clientes_avizamaq.csv');
+}
+
+function exportNewsletter(){
+  sb.from('newsletter').select('email,activo').then(({data})=>{
+    if(!data)return;
+    const rows=[['Email','Activo'],...data.map(n=>[n.email,n.activo?'Sí':'No'])];
+    downloadCSV(rows,'newsletter_avizamaq.csv');
+  });
+}
+
+function downloadCSV(rows,filename){
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  a.click();
+}
+
+// ── MODALS ──
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+// ── TOAST ──
+function showToast(msg){
+  const t=document.getElementById('toastAdmin');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ══════════════ END ADMIN JS ══════════════
 
 // ── INIT ──
 renderFeatured();updateCartUI();
