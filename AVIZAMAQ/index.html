@@ -1369,10 +1369,14 @@ function renderCatalog(){
 }
 
 function prodCardHTML(p){
+  const IVA = 1.21; // 21% IVA - precios en BD son sin IVA
   const isConsult=p.price===0;
-  const userPrice=getUserPrice(p.price);
-  const pvpFmt=p.price.toFixed(2).replace('.',',')+' €';
-  const userFmt=userPrice!==null?userPrice.toFixed(2).replace('.',',')+' €':null;
+  const priceConIva = p.price * IVA;
+  const userPriceBase = getUserPrice(p.price);
+  const userPriceConIva = userPriceBase !== null ? userPriceBase * IVA : null;
+  const pvpFmt=priceConIva.toFixed(2).replace('.',',')+' €';
+  const userFmt=userPriceConIva!==null?userPriceConIva.toFixed(2).replace('.',',')+' €':null;
+  const pvpSinIva=p.price.toFixed(2).replace('.',',')+' €';
   return `<div class="prod-card">
     <div class="prod-img">
       <div class="prod-img-bg"></div>
@@ -1389,7 +1393,7 @@ function prodCardHTML(p){
         <div>
           ${isConsult
             ?'<div class="prod-price" style="font-size:14px;color:var(--silver)">Precio a consultar</div>'
-            :`<div class="prod-price">${pvpFmt}</div>${userFmt?`<div class="prod-price-user">Tu precio: ${userFmt}</div>`:''}<div class="prod-price-label">IVA 21% incluido</div>`
+            :`<div class="prod-price">${pvpFmt}</div>${userFmt?`<div class="prod-price-user">Tu precio: ${userFmt}</div>`:''}<div class="prod-price-label">${pvpSinIva} + IVA 21%</div>`
           }
         </div>
         ${isConsult
@@ -1459,7 +1463,7 @@ function updateCartUI(){
       <div class="cart-item-info">
         <div class="cart-item-name">${c.name}</div>
         <div class="cart-item-ref">${c.brand}${c.ref?' · '+c.ref:''}</div>
-        <div class="cart-item-price">${(p*c.qty).toFixed(2).replace('.',',')} €</div>
+        <div class="cart-item-price">${(p*1.21*c.qty).toFixed(2).replace('.',',')} €</div>
         <div class="cart-item-qty">
           <button class="qty-btn" onclick="changeQty(${c.id},-1)">−</button>
           <span class="qty-num">${c.qty}</span>
@@ -1469,8 +1473,10 @@ function updateCartUI(){
       <button class="cart-item-remove" onclick="removeFromCart(${c.id})">✕</button>
     </div>`;
   }).join('');
-  const tp=cart.reduce((s,c)=>{const p=getUserPrice(c.price)!==null?getUserPrice(c.price):c.price;return s+p*c.qty;},0);
-  document.getElementById('cartTotal').textContent=tp.toFixed(2).replace('.',',')+' €';
+  const IVA_CART = 1.21;
+  const tpSinIva=cart.reduce((s,c)=>{const p=getUserPrice(c.price)!==null?getUserPrice(c.price):c.price;return s+p*c.qty;},0);
+  const tpConIva = tpSinIva * IVA_CART;
+  document.getElementById('cartTotal').textContent=tpConIva.toFixed(2).replace('.',',')+' €';
 }
 function toggleCart(){document.getElementById('cartPanel').classList.toggle('open');}
 function checkout(){
@@ -1672,9 +1678,11 @@ async function doRegister(){
 }
 function updateNavUser(){
   if(!currentUser)return;
+  const isAdmin = currentUser.email === 'avizamaq@gmail.com' || currentUser.tier === 'admin';
   document.getElementById('navRight').innerHTML=`
     <span class="user-greeting">Hola, ${currentUser.name.split(' ')[0]}</span>
     <span class="user-tier-badge">${currentUser.tier.toUpperCase()}</span>
+    ${isAdmin ? `<button class="btn-nav-login" style="border-color:var(--gold);color:var(--gold)" onclick="window.location.href='/columna.html'">⚙ Admin</button>` : ''}
     <button class="nav-cart" onclick="toggleCart()">🛒 <span class="cart-count" id="cartCount">${cart.reduce((s,c)=>s+c.qty,0)}</span></button>
     <button class="btn-nav-login" onclick="doLogout()">Cerrar sesión</button>`;
 }

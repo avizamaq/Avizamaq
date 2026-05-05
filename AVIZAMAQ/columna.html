@@ -193,7 +193,7 @@ tr:last-child td{border-bottom:none;}
     <div class="login-logo">AVIZA<span>MAQ</span></div>
     <div class="login-sub">Panel de administración</div>
     <div id="loginAlert"></div>
-    <div class="login-field"><label>Email</label><input type="email" id="loginEmail" placeholder="avizamaq@gmail.com" value="avizamaq@gmail.com"></div>
+    <div class="login-field"><label>Email</label><input type="email" id="loginEmail" placeholder="Email de acceso"></div>
     <div class="login-field"><label>Contraseña</label><input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
     <button class="btn-login" onclick="doAdminLogin()">Acceder al panel</button>
   </div>
@@ -222,7 +222,7 @@ tr:last-child td{border-bottom:none;}
       <div class="nav-item" onclick="window.open('https://avizamaq.es','_blank')"><span class="nav-icon">🌐</span>Ver web</div>
     </nav>
     <div class="sidebar-footer">
-      <div class="sidebar-user" id="sidebarUser">avizamaq@gmail.com</div>
+      <div class="sidebar-user" id="sidebarUser">Panel activo</div>
       <button class="btn-logout" onclick="doAdminLogout()">Cerrar sesión</button>
     </div>
   </div>
@@ -456,7 +456,7 @@ tr:last-child td{border-bottom:none;}
 const SUPABASE_URL = 'https://mrpmbghwkcrnqtdegpvn.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ycG1iZ2h3a2NybnF0ZGVncHZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDk3MDgsImV4cCI6MjA5MzQ4NTcwOH0.ACKl_kZ-WmP_EdQo7RJ41gkMZdECbWTawVfodQwYN6A';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const ADMIN_EMAIL = 'avizamaq@gmail.com';
+// Admin access controlled by Supabase auth roles
 
 let allClientes=[], allProductos=[], allConsultas=[], editingProdId=null;
 
@@ -470,16 +470,16 @@ async function doAdminLogin(){
   const al=document.getElementById('loginAlert');
   al.innerHTML='';
   if(!email||!pass){al.innerHTML='<div class="login-alert">Rellena todos los campos</div>';return;}
-  if(email!==ADMIN_EMAIL){al.innerHTML='<div class="login-alert">Acceso no autorizado</div>';return;}
+  // Admin verification handled by Supabase RLS
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){al.innerHTML=`<div class="login-alert">${error.message}</div>`;return;}
-  enterAdmin(email);
+  enterAdmin();
 }
 
-function enterAdmin(email){
+function enterAdmin(){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('adminLayout').style.display='grid';
-  document.getElementById('sidebarUser').textContent=email;
+  document.getElementById('sidebarUser').textContent='Panel activo';
   loadDashboard();
 }
 
@@ -491,7 +491,7 @@ async function doAdminLogout(){
 
 // Check session on load
 sb.auth.getSession().then(({data:{session}})=>{
-  if(session?.user?.email===ADMIN_EMAIL) enterAdmin(session.user.email);
+  if(session?.user) enterAdmin();
 });
 
 // ── NAVIGATION ──
@@ -712,7 +712,7 @@ function renderProductosTable(data){
       <td><strong>${p.nombre}</strong>${p.compatible_con?`<br><small style="color:var(--silver);opacity:.5">${p.compatible_con}</small>`:''}</td>
       <td><span style="color:var(--gold);font-size:12px;font-weight:600">${p.marca}</span></td>
       <td><small>${p.categoria}</small></td>
-      <td>${p.precio_a_consultar?'<span style="color:var(--silver)">Consultar</span>':`<strong style="color:var(--gold)">${parseFloat(p.precio).toFixed(2)} €</strong>`}</td>
+      <td>${p.precio_a_consultar?'<span style="color:var(--silver)">Consultar</span>':`<strong style="color:var(--gold)">${parseFloat(p.precio).toFixed(2)} €</strong> <small style="color:var(--silver);font-size:10px">(+ IVA ${p.iva||21}%)</small>`}</td>
       <td>${p.stock||0}</td>
       <td><span style="color:${p.activo?'var(--green)':'var(--red)'}">●</span></td>
       <td style="white-space:nowrap">
