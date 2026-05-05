@@ -456,6 +456,17 @@ footer{background:#080808;border-top:1px solid rgba(245,184,0,.1);padding:48px 6
 .reg-type-btn.active{background:rgba(245,184,0,.12);border-color:var(--gold);color:var(--gold);}
 .reg-type-btn:hover{border-color:rgba(245,184,0,.4);color:var(--gold);}
 
+
+/* ── COOKIE BANNER ── */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:1000;background:rgba(13,13,13,.98);border-top:1px solid rgba(245,184,0,.2);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;backdrop-filter:blur(8px);}
+.cookie-text{font-size:12px;color:rgba(184,188,200,.7);line-height:1.6;flex:1;}
+.cookie-text a{color:var(--gold);text-decoration:none;}
+.cookie-btns{display:flex;gap:10px;flex-shrink:0;}
+.cookie-accept{background:var(--gold);border:none;color:var(--carbon);padding:9px 20px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:background .2s;}
+.cookie-accept:hover{background:var(--gold-light);}
+.cookie-decline{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--silver);padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.cookie-decline:hover{border-color:var(--silver);}
+@media(max-width:768px){.cookie-banner{flex-direction:column;padding:16px 20px;gap:12px;}.cookie-btns{width:100%;}.cookie-accept,.cookie-decline{flex:1;text-align:center;}}
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--carbon);}
@@ -1626,7 +1637,10 @@ async function doRegister(){
 
   // Guardar en Supabase Auth + tabla clientes
   try {
-    const { data: authData, error: authError } = await sb.auth.signUp({ email, password: pass });
+    const { data: authData, error: authError } = await sb.auth.signUp({ 
+      email, password: pass,
+      options: { emailRedirectTo: 'https://www.avizamaq.es' }
+    });
     if(authError && authError.message !== 'User already registered') throw authError;
     const uid = authData?.user?.id || null;
     await sb.from('clientes').insert([{
@@ -1742,8 +1756,33 @@ function toggleMobileSubmenu(id) {
   if(arrow) arrow.textContent = sub.classList.contains('open') ? '▴' : '▾';
 }
 
+
+// ── COOKIES GDPR ──
+function initCookies(){
+  const consent = localStorage.getItem('avizamaq_cookies');
+  if(!consent) {
+    setTimeout(()=>{ document.getElementById('cookieBanner').style.display='flex'; }, 1500);
+  } else if(consent === 'accepted') {
+    enableAnalytics();
+  }
+}
+function acceptCookies(){
+  localStorage.setItem('avizamaq_cookies','accepted');
+  document.getElementById('cookieBanner').style.display='none';
+  enableAnalytics();
+}
+function declineCookies(){
+  localStorage.setItem('avizamaq_cookies','declined');
+  document.getElementById('cookieBanner').style.display='none';
+}
+function enableAnalytics(){
+  // Google Analytics ya está cargado en el head
+  if(typeof gtag !== 'undefined') gtag('consent','update',{'analytics_storage':'granted'});
+}
+
 // ── INIT ──
 renderFeatured();updateCartUI();
+initCookies();
 // Cargar productos desde Supabase
 loadProductsFromDB();
 // Show popup once per session
@@ -1755,6 +1794,19 @@ loadProductsFromDB();
 //   }
 // },2500);
 </script>
+
+<!-- ── COOKIE BANNER ── -->
+<div class="cookie-banner" id="cookieBanner" style="display:none">
+  <div class="cookie-text">
+    🍪 Usamos cookies propias y de terceros (Google Analytics) para mejorar tu experiencia y analizar el tráfico de la web. 
+    Puedes aceptar todas las cookies o solo las necesarias. 
+    <a onclick="showPage('cookies')" style="cursor:pointer">Más información</a>
+  </div>
+  <div class="cookie-btns">
+    <button class="cookie-decline" onclick="declineCookies()">Solo necesarias</button>
+    <button class="cookie-accept" onclick="acceptCookies()">Aceptar todas</button>
+  </div>
+</div>
 </body>
 </html>
 
