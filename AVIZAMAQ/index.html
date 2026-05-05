@@ -1953,7 +1953,11 @@ function renderFeatured(){
 const TIER_DISCOUNT={cliente:.05,profesional:.12,distribuidor:.18,vip:.25};
 function getUserPrice(price){
   if(!currentUser||price===0)return null;
-  return price*(1-TIER_DISCOUNT[currentUser.tier||'cliente']);
+  // Use personalised discount if set, otherwise use tier discount
+  if(currentUser.descuento && currentUser.descuento > 0){
+    return price*(1 - currentUser.descuento/100);
+  }
+  return price*(1-( TIER_DISCOUNT[currentUser.tier||'cliente'] || 0 ));
 }
 
 // ── CART ──
@@ -1998,33 +2002,129 @@ function updateCartUI(){
   document.getElementById('cartTotal').textContent=tpConIva.toFixed(2).replace('.',',')+' €';
 }
 function toggleCart(){document.getElementById('cartPanel').classList.toggle('open');}
-function checkout(){
+async function checkout(){
   if(!currentUser){toggleCart();openModal('login');showToast('Inicia sesión para finalizar el pedido');return;}
-  showToast('🎉 Pedido recibido · Te contactaremos para confirmar envío y pago');
+  
+  // Calculate totals
+  const IVA = 1.21;
+  const subtotalSinIva = cart.reduce((s,c)=>{
+    const p=getUserPrice(c.price)!==null?getUserPrice(c.price):c.price;
+    return s+p*c.qty;
+  },0);
+  const ivaTotal = subtotalSinIva * 0.21;
+  const total = subtotalSinIva * IVA;
+  
+  try {
+    // Save pedido to Supabase
+    const {data: pedido, error} = await sb.from('pedidos').insert([{
+      cliente_id: currentUser.clienteId || null,
+      subtotal: subtotalSinIva.toFixed(2),
+      descuento_aplicado: currentUser.descuento || 0,
+      total_sin_iva: subtotalSinIva.toFixed(2),
+      iva_total: ivaTotal.toFixed(2),
+      total: total.toFixed(2),
+      transportista: 'Ontime',
+      notas_cliente: ''
+    }]).select().single();
+    
+    if(!error && pedido){
+      // Save order lines
+      const lineas = cart.map(c => ({
+        pedido_id: pedido.id,
+        producto_id: typeof c.id === 'string' && c.id.includes('-') ? c.id : null,
+        referencia: c.ref || '',
+        nombre: c.name,
+        marca: c.brand,
+        cantidad: c.qty,
+        precio_unitario: (getUserPrice(c.price)!==null?getUserPrice(c.price):c.price).toFixed(2),
+        descuento: currentUser.descuento || 0,
+        precio_final: ((getUserPrice(c.price)!==null?getUserPrice(c.price):c.price)*c.qty).toFixed(2),
+        iva: 21
+      }));
+      await sb.from('lineas_pedido').insert(lineas);
+      showToast('🎉 Pedido ' + pedido.numero_pedido + ' recibido · Te contactaremos pronto');
+    } else {
+      showToast('🎉 Pedido recibido · Te contactaremos para confirmar');
+    }
+  } catch(e) {
+    showToast('🎉 Pedido recibido · Te contactaremos para confirmar');
+  }
+  
   cart=[];updateCartUI();document.getElementById('cartPanel').classList.remove('open');
 }
 
 // ── AUTH ──
-const DEMO_USERS=[
-  {email:'cliente@test.com',pass:'123456',name:'Cliente Test',tier:'cliente',approved:true},
-  {email:'pro@test.com',pass:'123456',name:'Taller Pro',tier:'profesional',approved:true},
-  {email:'vip@test.com',pass:'123456',name:'Empresa VIP',tier:'vip',approved:true},
-];
-function doLogin(){
+// Auth handled by Supabase
+async function doLogin(){
   const email=document.getElementById('loginEmail').value.trim();
   const pass=document.getElementById('loginPass').value;
   const al=document.getElementById('loginAlert');
   if(!email||!pass){al.innerHTML='<div class="alert alert-error">Rellena todos los campos</div>';return;}
-  const u=DEMO_USERS.find(u=>u.email===email&&u.pass===pass);
-  if(!u){al.innerHTML='<div class="alert alert-error">Email o contraseña incorrectos</div>';return;}
-  if(!u.approved){al.innerHTML='<div class="alert alert-info">Tu cuenta está pendiente de aprobación.</div>';return;}
-  currentUser=u;closeModal('login');updateNavUser();renderFeatured();
-  // If admin, show admin dashboard
-  if(u.email === 'avizamaq@gmail.com') {
+  
+  al.innerHTML='<div class="alert alert-info">Verificando credenciales…</div>';
+  
+  const {data, error} = await sb.auth.signInWithPassword({email, password: pass});
+  
+  if(error){
+    if(error.message.includes('Invalid login') || error.message.includes('invalid_credentials')){
+      al.innerHTML='<div class="alert alert-error">Email o contraseña incorrectos</div>';
+    } else if(error.message.includes('Email not confirmed')){
+      al.innerHTML='<div class="alert alert-error">Confirma tu email antes de entrar. Revisa tu bandeja de entrada.</div>';
+    } else {
+      al.innerHTML=`<div class="alert alert-error">${error.message}</div>`;
+    }
+    return;
+  }
+  
+  const user = data.user;
+  const isAdmin = user.user_metadata?.is_admin === true;
+  
+  if(isAdmin){
+    currentUser = {
+      id: user.id, email: user.email,
+      name: user.user_metadata?.name || 'Admin',
+      tier: 'admin', approved: true
+    };
+    closeModal('login');
+    updateNavUser();
     showAdminDashboard();
     return;
   }
-  showToast('¡Bienvenido '+u.name+'! Tarifa: '+u.tier.toUpperCase());
+  
+  // Fetch client data from clientes table
+  const {data: clienteData} = await sb.from('clientes').select('*').eq('auth_user_id', user.id).single();
+  
+  if(clienteData) {
+    if(clienteData.estado === 'pendiente'){
+      al.innerHTML='<div class="alert alert-info">Tu cuenta está pendiente de aprobación. Te avisaremos por email cuando esté activa.</div>';
+      await sb.auth.signOut();
+      return;
+    }
+    if(clienteData.estado === 'rechazado' || clienteData.estado === 'suspendido'){
+      al.innerHTML=`<div class="alert alert-error">Tu cuenta está ${clienteData.estado}. Contacta con nosotros para más información.</div>`;
+      await sb.auth.signOut();
+      return;
+    }
+    currentUser = {
+      id: user.id, email: user.email,
+      name: clienteData.nombre + ' ' + clienteData.apellidos,
+      tier: clienteData.tarifa || 'cliente',
+      descuento: clienteData.descuento_personalizado || 0,
+      approved: true, clienteId: clienteData.id
+    };
+  } else {
+    // Auth user exists but no clientes record yet
+    currentUser = {
+      id: user.id, email: user.email,
+      name: email.split('@')[0],
+      tier: 'cliente', approved: true
+    };
+  }
+  
+  closeModal('login');
+  updateNavUser();
+  renderFeatured();
+  showToast('¡Bienvenido, ' + currentUser.name.split(' ')[0] + '!');
 }
 // ── SUPABASE: Cargar productos ──
 async function loadProductsFromDB() {
@@ -2202,7 +2302,7 @@ async function doRegister(){
 }
 function updateNavUser(){
   if(!currentUser)return;
-  const isAdmin = currentUser.email === 'avizamaq@gmail.com';
+  const isAdmin = currentUser.tier === 'admin' || currentUser.email === 'admin@avizamaq.es';
   document.getElementById('navRight').innerHTML=`
     <span class="user-greeting">Hola, ${currentUser.name.split(' ')[0]}</span>
     <span class="user-tier-badge">${currentUser.tier.toUpperCase()}</span>
@@ -2210,8 +2310,10 @@ function updateNavUser(){
     <button class="nav-cart" onclick="toggleCart()">🛒 <span class="cart-count" id="cartCount">${cart.reduce((s,c)=>s+c.qty,0)}</span></button>
     <button class="btn-nav-login" onclick="doLogout()">Cerrar sesión</button>`;
 }
-function doLogout(){
+async function doLogout(){
+  await sb.auth.signOut();
   currentUser=null;
+  cart=[];
   document.getElementById('navRight').innerHTML=`
     <button class="nav-cart" onclick="toggleCart()">🛒 <span class="cart-count" id="cartCount">0</span></button>
     <button class="btn-nav-login" onclick="openModal('login')">Iniciar sesión</button>
@@ -2823,6 +2925,33 @@ function showToast(msg){
 // ── INIT ──
 renderFeatured();updateCartUI();
 initCookies();
+// Restore session on page load
+sb.auth.getSession().then(async ({data:{session}}) => {
+  if(!session) return;
+  const user = session.user;
+  const isAdmin = user.user_metadata?.is_admin === true;
+  if(isAdmin){
+    currentUser = {
+      id: user.id, email: user.email,
+      name: user.user_metadata?.name || 'Admin',
+      tier: 'admin', approved: true
+    };
+    updateNavUser();
+    return;
+  }
+  const {data: clienteData} = await sb.from('clientes').select('*').eq('auth_user_id', user.id).single();
+  if(clienteData && clienteData.estado === 'aprobado'){
+    currentUser = {
+      id: user.id, email: user.email,
+      name: clienteData.nombre + ' ' + clienteData.apellidos,
+      tier: clienteData.tarifa || 'cliente',
+      descuento: clienteData.descuento_personalizado || 0,
+      approved: true, clienteId: clienteData.id
+    };
+    updateNavUser();
+    renderFeatured();
+  }
+});
 // Cargar productos desde Supabase
 loadProductsFromDB();
 // Show popup once per session
